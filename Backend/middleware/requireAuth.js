@@ -12,16 +12,17 @@ const requireAuth = async (req,res,next)=>{
         const token = authorization.split(' ')[1];
         console.log(token);
 
+        try{
+            
         const {_id }  = jwt.verify(token,process.env.JWT_SECRET);
+        const user = await User.findOne({_id}).select('_id');
+         
+         req.user_Id = user._id;
+         next();
 
-        const existsUser = await User.findOne({_id}).select('_id');
-
-        if(!existsUser){
-            res.status(400).json({msg:"Invalid login"});
-        }
-
-        next();
-       
+        }catch(e){
+            return res.status(403).json({msg:e.message});
+        }    
 }
 
 module.exports = { requireAuth }
