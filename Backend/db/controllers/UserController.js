@@ -61,7 +61,59 @@ const loginUser = async (req,res) =>{
     res.status(200).json({token});
 }
 
+const getAllusers = async (req,res) =>{
+
+    const filter = req.query.filter || " ";
+
+    const users = await User.find({
+        $or:[{
+            firstname:{
+                "$regex":filter
+            }
+        },{
+            lastname:{
+                "$regex":filter
+            }
+        }]
+
+    });
+
+
+    res.status(200).json(
+        {user:users.map(user=>({
+        username:user.username,
+        firstname:user.firstname,
+        lastname:user.lastname,
+        user_id: user._id      }) )
+       });
+
+}
+
+
+const updateSchema = zod.object({
+    firstname:zod.string().max(50),
+    lastname:zod.string().max(50),
+    password:zod.string().min(6)
+
+});
+
+const updatesDetails = async (req,res) =>{
+     
+    
+    const {success,error} = updateSchema.safeParse(req.body);
+
+    if(!success){
+        res.status(411).json({msg:error});
+    }
+
+     await User.updateOne(req.body,{
+        _id: req.user_Id
+     });
+}
+
 module.exports = {
     signupUser,
-    loginUser
+    loginUser,
+    getAllusers,
+    updatesDetails 
 }
