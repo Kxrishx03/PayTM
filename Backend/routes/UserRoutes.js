@@ -1,18 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const { signupUser, loginUser} = require("../db/controllers/UserController");
 
 
 //signup
-router.post('/signup',(req,res)=>{
-      res.status(200).json({msg:"User sign up"});
-});
+router.post('/signup',signupUser);
 
 
 //login
-router.post('/login',(req,res)=>{
-    res.status(200).json({msg:"User login"})
-
-});
+router.post('/login',loginUser);
 
 
 

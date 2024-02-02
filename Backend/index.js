@@ -1,10 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
+
 const  UserRoutes  = require("./routes/UserRoutes");
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 const PORT = process.env.PORT;
 
 
@@ -17,7 +21,7 @@ app.use((req,res,next)=>{
     next();
  });
 
-app.use('/api/v1', UserRoutes);
+app.use('/api/v1/user', UserRoutes);
 
 
 //connect to db
