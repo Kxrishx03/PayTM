@@ -47,7 +47,18 @@ const loginUser = async (req,res) =>{
       
     const {username,password} = req.body;
     
+    const user = await User.findOne({username});
+    if(!user){
+        res.status(411).json({msg:"Username doesn't exits"});
+    }
 
+    const match = await bcrypt.compare(password,user.password);
+
+    if(!match){
+        res.status(411).json({msg:"Wrong Password"});
+    }
+    const token = createToken(user._id);
+    res.status(200).json({token});
 }
 
 module.exports = {
