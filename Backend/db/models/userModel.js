@@ -6,21 +6,26 @@ const userSchema = new Schema({
     username:{
         type:String,
         required:true,
-        unique:true
+        unique:true,
+        trim:true,
+        lowercase:true,
+        minLength:5,
+        maxLength:50
     },
     firstname:{
         type:String,
         required:true,
-       
+        maxLength:50
     },
     lastname:{
         type:String,
         required:true,
-       
+        maxLength:50
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        minLength:6
     }
 });
 
