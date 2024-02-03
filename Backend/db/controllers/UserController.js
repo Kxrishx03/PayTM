@@ -60,7 +60,7 @@ const loginUser = async (req,res) =>{
     if(!user){
         res.status(411).json({msg:"Username doesn't exits"});
     }
-
+ 
     const match = await bcrypt.compare(password,user.password);
 
     if(!match){
