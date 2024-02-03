@@ -1,8 +1,8 @@
 const { User } = require("../models/userModel");
+const { Account } = require("../models/accountmodel");
 const bcrypt = require('bcrypt');
 const zod = require("zod");
 const jwt = require("jsonwebtoken");
-
 
 
 const createToken = (_id)=>{
@@ -37,6 +37,7 @@ const signupUser = async (req,res) =>{
     const hash = await bcrypt.hash(password,salt); 
     
     const user = await User.create({username,firstname,lastname,password:hash});
+    
     const token = createToken(user._id);
     res.status(200).json({username,token});   
 
@@ -63,7 +64,7 @@ const loginUser = async (req,res) =>{
 
 const getAllusers = async (req,res) =>{
 
-    const filter = req.query.filter || " ";
+    const filter = req.query.filter || "";
 
     const users = await User.find({
         $or:[{
