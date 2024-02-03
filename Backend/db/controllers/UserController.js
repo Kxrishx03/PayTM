@@ -18,6 +18,7 @@ const userSchema = zod.object({
 });
 
 
+//Sign-up Controller
 const signupUser = async (req,res) =>{
 
     const {username,firstname,lastname,password} = req.body;
@@ -36,14 +37,21 @@ const signupUser = async (req,res) =>{
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password,salt); 
     
+    //Creating a new User
     const user = await User.create({username,firstname,lastname,password:hash});
+     
+   //Creating their Account 
+    await Account.create({
+        userId: user._id,
+        balance:1+Math.random()*10000
+    });
     
     const token = createToken(user._id);
     res.status(200).json({username,token});   
 
-    }
+}
 
-
+//Login controller
 const loginUser = async (req,res) =>{
       
     const {username,password} = req.body;
@@ -62,6 +70,7 @@ const loginUser = async (req,res) =>{
     res.status(200).json({token});
 }
 
+//User-Filter controller
 const getAllusers = async (req,res) =>{
 
     const filter = req.query.filter || "";
@@ -91,6 +100,8 @@ const getAllusers = async (req,res) =>{
 }
 
 
+//Updates controller
+
 const updateSchema = zod.object({
     firstname:zod.string().max(50),
     lastname:zod.string().max(50),
@@ -100,7 +111,6 @@ const updateSchema = zod.object({
 
 const updatesDetails = async (req,res) =>{
      
-    
     const {success,error} = updateSchema.safeParse(req.body);
 
     if(!success){

@@ -1,7 +1,12 @@
 const express = require('express');
+const { requireAuth } = require('../middleware/requireAuth');
 const router = express.Router();
+const { getAccountBalance ,makeTransaction} = require("../db/controllers/AccountControllers");
 
+//Router to get balance
+router.get('/balance',requireAuth,getAccountBalance);
 
-router.get('/balance',(req,res)=>{
-    res.status(200).json({balance:1000});
-});
+//Router to make transfer
+router.post('/transaction',makeTransaction)
+
+module.exports = router;

@@ -4,6 +4,7 @@ const cors = require('cors');
 
 
 const  UserRoutes  = require("./routes/UserRoutes");
+const AccountRoutes = require("./routes/AccountRoutes");
 require('dotenv').config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use((req,res,next)=>{
  });
 
 app.use('/api/v1/user', UserRoutes);
+app.use('/api/v1/account',AccountRoutes);
 
 
 //connect to db
