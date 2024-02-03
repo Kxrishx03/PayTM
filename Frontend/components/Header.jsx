@@ -2,7 +2,7 @@ export function Header(){
     return(
          <div className="shadow bg-slate-900 h-14 flex justify-between">
         <div className=" text-white flex flex-col justify-center h-full ml-4">
-            PayTM App
+            PayBuddy
         </div>
         <div className="flex">
             <div className=" text-white flex flex-col justify-center h-full mr-4">

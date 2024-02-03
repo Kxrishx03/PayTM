@@ -10,10 +10,10 @@ const createToken = (_id)=>{
 }
 
 const userSchema = zod.object({
-    username:zod.string().min(5),
-    firstname:zod.string().max(50),
-    lastname:zod.string().max(50),
-    password:zod.string().min(6),
+    username:zod.string().min(5,{ message: "This field has to be filled." }).email(),
+    firstname:zod.string().max(50).min(4,{ message: "This field has to be filled." }),
+    lastname:zod.string().max(50).min(4,{ message: "This field has to be filled." }),
+    password:zod.string().min(6,{ message: "This field has to be filled." }),
 
 });
 
