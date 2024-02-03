@@ -1,7 +1,5 @@
 const { Account } = require("../models/accountmodel");
-const bcrypt = require('bcrypt');
-const zod = require("zod");
-const jwt = require("jsonwebtoken");
+const mongoose = require('mongoose');
 
 
 const getAccountBalance = async (req,res) =>{
@@ -27,9 +25,9 @@ const makeTransaction = async (req,res) =>{
 
     const { amount , to } = req.body;
 
-    const FromAccount = await Account.findOne({userId:req.userId}).session(session);
+    const FromAccount = await Account.findOne({userId: req.user_Id}).session(session);
 
-    if(!FromAccount || FromAccount.balance < amount){
+    if(!FromAccount || FromAccount.balance<amount){
         await session.abortTransaction();
         return res.status(400).json({Error:"You've insufficient balance"});
     }

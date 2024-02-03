@@ -7,6 +7,6 @@ const { getAccountBalance ,makeTransaction} = require("../db/controllers/Account
 router.get('/balance',requireAuth,getAccountBalance);
 
 //Router to make transfer
-router.post('/transaction',makeTransaction)
+router.post('/transaction',requireAuth,makeTransaction)
 
 module.exports = router;
