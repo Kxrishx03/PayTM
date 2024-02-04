@@ -31,7 +31,7 @@ const signupUser = async (req,res) =>{
 
     const exits = await User.findOne({username});
     if(exits){
-        res.status(411).json({msg:"Username already in use"});
+       return  res.status(411).json({msg:"Username already in use"});
     }
      
     const salt = await bcrypt.genSalt(10);
@@ -71,7 +71,7 @@ const loginUser = async (req,res) =>{
 }
 
 //User-Filter controller
-const getAllusers = async (req,res) =>{
+const getUser = async (req,res) =>{
 
     const filter = req.query.filter || "";
 
@@ -86,9 +86,21 @@ const getAllusers = async (req,res) =>{
             }
         }]
 
-    });
+    }); 
 
+    res.status(200).json(
+        {user:users.map(user=>({
+        username:user.username,
+        firstname:user.firstname,
+        lastname:user.lastname,
+        user_id: user._id      }) )
+       });
+}
 
+    //User-All controller
+const getAllusers = async (req,res) =>{
+
+   const users = await User.find({});
     res.status(200).json(
         {user:users.map(user=>({
         username:user.username,
@@ -126,5 +138,6 @@ module.exports = {
     signupUser,
     loginUser,
     getAllusers,
-    updatesDetails 
+    updatesDetails,
+    getUser
 }

@@ -4,7 +4,8 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { Bottomwarning } from "../components/Bottomwarning";
 import { useState } from "react";
-import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
+import  axios from "axios";
 
 export function Signup(){
 
@@ -14,7 +15,7 @@ export function Signup(){
     const [username,setusername] = useState('');
     const [password,setPassword] = useState('');
 
-
+    const navigate = useNavigate();
 
     return(  <div className="bg-white h-screen flex justify-center">
         <div className="flex flex-col justify-center">
@@ -33,10 +34,14 @@ export function Signup(){
             <Input  label={"Password"} placeholder={"Enter Password"} onChange={(e)=>{
                 setPassword(e.target.value);
             }} />
-            <Button label={"Submit"} onClick={()=>{
-                axios.post("http://localhost:3000/api/v1/user/signup",{
-                    username,firstname,lastname,password
-                });
+            <Button label={"Submit"} onClick={ ()=>{
+                axios.post('http://localhost:3000/api/v1/user/signup', {username,firstname,lastname,password})
+                 .then(response => {
+                   localStorage.setItem("token",response.data.token) 
+                    navigate("/home")
+                  console.log('Response:', response.data.token);})
+                  .catch(error => {
+                console.error('Error:', error); });
             }} />
             </div>
             <Bottomwarning label={"Already have an account?"} buttonText={"Sign in"} to={"/login"} />
